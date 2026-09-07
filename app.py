@@ -96,74 +96,19 @@ st.markdown("""
 
 
 # ──────────────────────────────────────────
-# БОКОВАЯ ПАНЕЛЬ — НАСТРОЙКА КЛЮЧЕЙ
+# КЛЮЧИ API — берутся из переменных окружения сервера
+# (боковая панель с ручным вводом ключей отключена,
+# т.к. приложение развёрнуто на сервере с уже настроенным .env)
 # ──────────────────────────────────────────
 
-with st.sidebar:
-    st.title("⚙️ Настройки API")
+gemini_key = os.environ.get("GEMINI_API_KEY", "")
+google_key = os.environ.get("SERPER_API_KEY", "")
+google_cx = ""
 
-    st.markdown("### 🔑 API Ключи")
-    st.caption("Все ключи хранятся только в сессии браузера")
-
-    # Gemini — один ключ для всего (детекция + оценка качества)
-    with st.expander("🧠 Gemini API (детекция + оценка)", expanded=True):
-        gemini_key = st.text_input(
-            "Gemini API Key",
-            type="password",
-            value=os.environ.get("GEMINI_API_KEY", ""),
-            placeholder="AIzaSy...",
-            help="aistudio.google.com/app/apikey — бесплатно"
-        )
-        st.caption("Бесплатно: 1500 запросов/день · Казахский ✅ Русский ✅")
-        st.markdown("[Получить ключ →](https://aistudio.google.com/app/apikey)", unsafe_allow_html=False)
-
-    # Serper
-    with st.expander("🔍 Serper API (плагиат)"):
-        google_key = st.text_input(
-            "Serper API Key",
-            type="password",
-            value=os.environ.get("SERPER_API_KEY", ""),
-            placeholder="Вставьте ваш Serper API ключ",
-            help="serper.dev → Register → 2500 запросов бесплатно"
-        )
-        google_cx = ""
-        st.caption("Бесплатно: 2500 запросов (~500 эссе)")
-        st.markdown("[Получить ключ →](https://serper.dev)", unsafe_allow_html=False)
-
-    st.divider()
-
-    # Статус API
-    st.markdown("### 📊 Статус")
-    col1, col2, col3 = st.columns(3)
-    col1.metric("AI детекция", "✅" if gemini_key else "❌")
-    col2.metric("Плагиат", "✅" if google_key else "⚠️")
-    col3.metric("Качество", "✅" if gemini_key else "❌")
-
-    if not google_key:
-        st.caption("⚠️ Без Serper API используется упрощённая проверка плагиата")
-
-    st.divider()
-
-    # Инструкция
-    with st.expander("📖 Как получить ключи"):
-        st.markdown("""
-**ZeroGPT (бесплатно):**
-1. zerogpt.com/api
-2. Зарегистрируйтесь
-3. API Keys → Create
-
-**Google Search (бесплатно):**
-1. console.cloud.google.com
-2. Включите "Custom Search JSON API"
-3. Создайте ключ
-4. cse.google.com/cse → новый поиск
-5. Скопируйте Search Engine ID
-
-**Gemini (бесплатно):**
-1. aistudio.google.com/app/apikey
-2. Войдите через Google аккаунт
-3. "Create API key" → готово
-""")
+if not gemini_key:
+    st.error("⚠️ GEMINI_API_KEY не задан на сервере — обратитесь к администратору.")
+if not google_key:
+    st.warning("⚠️ SERPER_API_KEY не задан — проверка плагиата будет работать в упрощённом режиме.")
 
 
 # ──────────────────────────────────────────
