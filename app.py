@@ -127,7 +127,7 @@ with col_left:
     # Имя студента (опционально)
     student_name = st.text_input(
         "Имя студента (необязательно):",
-        placeholder="Например: Айгерим Сейткали",
+        placeholder="Например: Жаксымбетов Ақдәулет",
         help="Будет указано в отчёте"
     )
 
@@ -137,7 +137,7 @@ with col_left:
         essay_text = st.text_area(
             "Текст эссе:",
             height=250,
-            placeholder="Вставьте эссе на казахском или русском языке...\n\nМинимум 100 слов для корректного анализа.",
+            placeholder="Вставьте текст на казахском или русском языке...\n\nМинимум 100 слов для корректного анализа.",
             label_visibility="collapsed"
         )
 
@@ -192,7 +192,7 @@ if not essay_text or len(essay_text.strip()) < 50:
     if essay_text:
         st.error("Текст слишком короткий. Минимум 50 символов.")
 else:
-    run_btn = st.button("🔍 Анализировать эссе", type="primary")
+    run_btn = st.button("🔍 Анализировать текст", type="primary")
 
     if run_btn:
         if not gemini_key:
